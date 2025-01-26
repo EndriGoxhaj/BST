@@ -109,6 +109,62 @@ class BST {
       return this.merge(a, b, c, j, i);
     }
   }
+  levelOrder(node = this.root, array = [], newArray = []) {
+    if (!node) return null;
+    array.push(node);
+    while (array.length != 0) {
+      node = array[0];
+      newArray.push(node.data);
+      if (node.left !== null) array.push(node.left);
+      if (node.right !== null) array.push(node.right);
+      array.shift();
+    }
+    console.log(newArray);
+  }
+  preOrder(node = this.root) {
+    if (!node) return null;
+    console.log(node.data);
+    this.preOrder(node.left);
+    this.preOrder(node.right);
+  }
+  inOrder(node = this.root, newArray = []) {
+    if (!node) return newArray;
+    this.inOrder(node.left, newArray);
+    newArray.push(node.data);
+    this.inOrder(node.right, newArray);
+
+    return newArray;
+  }
+  postOrder(node = this.root) {
+    if (!node) return null;
+    this.inOrder(node.left);
+    this.inOrder(node.right);
+    console.log(node.data);
+  }
+  height(node = this.root) {
+    if (!node) return -1;
+    let leftHeight = this.height(node.left);
+    let rightHeight = this.height(node.right);
+
+    return 1 + Math.max(leftHeight, rightHeight);
+  }
+  isBalanced(node = this.root) {
+    let left = this.height(node.left);
+    let right = this.height(node.right);
+    let difference = left - right;
+    if (difference > 1 || difference < -1) {
+      return null;
+    } else {
+      return true;
+    }
+  }
+  rebalance(node = this.root) {
+    if (!this.isBalanced(node)) {
+      console.log("found");
+      let array = this.inOrder(node);
+      this.root = this.buildTree(array, 0, array.length - 1);
+    } else return;
+  }
   mergeSort(array) {
     if (array.length <= 1) {
       return array;
@@ -141,4 +197,15 @@ let array = new BST([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 array.returnBuildTree();
 array.prettyPrint();
 array.delete(67);
+array.prettyPrint();
+array.insert(98);
+array.prettyPrint();
+array.insert(897);
+array.prettyPrint();
+array.insert(555);
+array.prettyPrint();
+array.insert(222);
+array.prettyPrint();
+array.isBalanced();
+array.rebalance();
 array.prettyPrint();
